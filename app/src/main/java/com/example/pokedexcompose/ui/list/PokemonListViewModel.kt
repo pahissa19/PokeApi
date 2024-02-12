@@ -1,4 +1,4 @@
-package com.example.pokedexcompose.ui.main
+package com.example.pokedexcompose.ui.list
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

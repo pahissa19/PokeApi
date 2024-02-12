@@ -21,10 +21,11 @@
             android:theme="@style/Theme.PokedexCompose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <!-- Registra la actividad PokemonDetailActivity -->
+        <activity android:name=".ui.detail.PokemonDetailActivity" />
+    </application>
 </manifest>

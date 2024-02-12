@@ -6,12 +6,14 @@ import com.example.pokedexcompose.data.domain.repository.remote.response.pokemon
 
 object PokemonDetailMapper {
     fun map(response: GetPokemonDetailResponse): PokemonDetail {
+        val imageUrl = response.sprites.frontDefault ?: "default_image_url"
         return PokemonDetail(
             name = response.name,
-            weight = response.weight / 10.0, // Convertir de hectogramos a kilogramos
-            height = response.height / 10.0, // Convertir de decímetros a metros
-            abilities = response.abilities.map { Ability(it.name) },
-            imageUrl = response.sprites.frontDefault
+            weight = response.weight / 10.0,
+            height = response.height / 10.0,
+            abilities = response.abilities.map { Ability(it.name ?: "Unknown") },
+            imageUrl = imageUrl
         )
     }
 }
+

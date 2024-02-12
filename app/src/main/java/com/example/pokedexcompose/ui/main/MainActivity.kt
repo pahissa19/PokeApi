@@ -1,5 +1,6 @@
 package com.example.pokedexcompose.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,12 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.pokedexcompose.R
 import com.example.pokedexcompose.data.domain.model.Pokemon
+import com.example.pokedexcompose.ui.detail.PokemonDetailActivity
+import com.example.pokedexcompose.ui.list.PokemonListViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -43,10 +46,11 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun PokemonListScreen(viewModel: PokemonListViewModel) {
+        val context = LocalContext.current
         val pokemonList by viewModel.pokemonList.collectAsState()
 
         LaunchedEffect(Unit) {
-            viewModel.getPokemonList(limit = 30, offset = 0) // Ejemplo de límite y desplazamiento
+            viewModel.getPokemonList(limit = 30, offset = 0)
         }
 
         LazyColumn(
@@ -55,25 +59,31 @@ class MainActivity : ComponentActivity() {
                 .padding(16.dp)
         ) {
             items(pokemonList) { pokemon ->
-                PokemonItem(pokemon = pokemon)
+                PokemonItem(pokemon = pokemon) {
+                    // Navigate to PokemonDetailActivity when a Pokemon is clicked
+                    context.startActivity(Intent(context, PokemonDetailActivity::class.java).apply {
+                        putExtra("pokemonName", pokemon.name)
+                    })
+                }
             }
         }
     }
 
+
     @Composable
-    fun PokemonItem(pokemon: Pokemon) {
+    fun PokemonItem(pokemon: Pokemon, onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)
-                .clickable { /* Acción cuando se hace clic en un Pokémon */ }
+                .clickable { onClick() }
         ) {
             Image(
                 painter = rememberImagePainter(
                     data = pokemon.url,
                     builder = {
                         placeholder(R.drawable.ic_launcher_background)
-                        error(R.drawable.ic_launcher_background)
+                        error(R.drawable.ic_launcher_foreground)
                     }
                 ),
                 contentDescription = null,
@@ -91,4 +101,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
