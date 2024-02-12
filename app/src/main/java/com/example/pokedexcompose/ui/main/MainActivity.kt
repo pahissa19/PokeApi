@@ -1,4 +1,4 @@
-package com.example.pokedexcompose
+package com.example.pokedexcompose.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
