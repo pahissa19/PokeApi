@@ -6,7 +6,7 @@ import com.example.pokedexcompose.data.domain.repository.remote.response.pokemon
 object PokemonListMapper {
     fun map(response: GetListPokemonResponse): List<Pokemon> {
         return response.results.mapIndexed { index, pokemonData ->
-            mapPokemon(pokemonData, index + 1) // Añadir 1 al índice para obtener el ID del Pokémon
+            mapPokemon(pokemonData, index + 1)
         }
     }
 
@@ -14,8 +14,8 @@ object PokemonListMapper {
         return Pokemon(
             name = pokemonData.name,
             url = pokemonData.url,
-            id = id, // Asignar el ID del Pokémon
-            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png" // Construir la URL de la imagen basada en el ID
+            id = id,
+            imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
         )
     }
 }

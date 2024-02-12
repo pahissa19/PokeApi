@@ -5,5 +5,5 @@ data class PokemonDetail(
     val weight: Double,
     val height: Double,
     val abilities: List<Ability>,
-    var imageUrl: String // Nuevo campo para la URL de la imagen del Pokémon
+    var imageUrl: String
 )

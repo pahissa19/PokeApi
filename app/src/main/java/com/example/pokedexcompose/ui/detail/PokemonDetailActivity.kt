@@ -35,7 +35,7 @@ class PokemonDetailActivity : ComponentActivity() {
 
         // Obtener el nombre y el ID del Pokémon del intent
         val pokemonName = intent.getStringExtra("pokemonName") ?: ""
-        val pokemonId = intent.getIntExtra("pokemonId", 1) // Valor predeterminado 1 en caso de que no se encuentre
+        val pokemonId = intent.getIntExtra("pokemonId", 1)
 
         // Obtener una instancia del ViewModel
         val viewModel = ViewModelProvider(this).get(PokemonDetailViewModel::class.java)
@@ -57,7 +57,6 @@ fun PokemonDetailScreen(viewModel: PokemonDetailViewModel) {
     val pokemonDetail by viewModel.pokemonDetail.collectAsState()
 
     pokemonDetail?.let { detail ->
-        // Mostrar los detalles del Pokémon
         Column(
             modifier = Modifier
                 .fillMaxSize()
