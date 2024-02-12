@@ -1,5 +1,8 @@
 package com.example.pokedexcompose.data.domain.repository.remote.response
 
+import com.example.pokedexcompose.data.domain.repository.remote.response.pokemon.AbilityResponse
+import com.example.pokedexcompose.data.domain.repository.remote.response.pokemon.GetListPokemonResponse
+import com.example.pokedexcompose.data.domain.repository.remote.response.pokemon.GetPokemonDetailResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

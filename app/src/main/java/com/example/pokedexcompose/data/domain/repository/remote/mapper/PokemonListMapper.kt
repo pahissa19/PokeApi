@@ -1,7 +1,7 @@
 package com.example.pokedexcompose.data.domain.repository.remote.mapper
 
 import com.example.pokedexcompose.data.domain.model.Pokemon
-import com.example.pokedexcompose.data.domain.repository.remote.response.GetListPokemonResponse
+import com.example.pokedexcompose.data.domain.repository.remote.response.pokemon.GetListPokemonResponse
 
 object PokemonListMapper {
     fun map(response: GetListPokemonResponse): List<Pokemon> {

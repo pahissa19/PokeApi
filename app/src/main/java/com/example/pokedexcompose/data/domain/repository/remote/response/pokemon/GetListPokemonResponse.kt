@@ -1,4 +1,4 @@
-package com.example.pokedexcompose.data.domain.repository.remote.response
+package com.example.pokedexcompose.data.domain.repository.remote.response.pokemon
 
 import com.example.pokedexcompose.data.domain.model.Pokemon
 

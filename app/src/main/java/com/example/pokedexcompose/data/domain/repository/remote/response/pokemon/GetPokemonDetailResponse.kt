@@ -1,6 +1,4 @@
-package com.example.pokedexcompose.data.domain.repository.remote.response
-
-import com.example.pokedexcompose.data.domain.model.Ability
+package com.example.pokedexcompose.data.domain.repository.remote.response.pokemon
 
 data class GetPokemonDetailResponse(
     val name: String,
