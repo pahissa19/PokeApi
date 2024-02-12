@@ -28,18 +28,28 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.pokedexcompose.data.domain.model.PokemonDetail
 
-@ExperimentalCoilApi
+
 class PokemonDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Obtener el nombre y el ID del Pokémon del intent
         val pokemonName = intent.getStringExtra("pokemonName") ?: ""
+        val pokemonId = intent.getIntExtra("pokemonId", 1) // Valor predeterminado 1 en caso de que no se encuentre
+
+        // Obtener una instancia del ViewModel
         val viewModel = ViewModelProvider(this).get(PokemonDetailViewModel::class.java)
-        viewModel.loadPokemonDetail(pokemonName)
+
+        // Cargar los detalles del Pokémon utilizando el nombre o el ID
+        viewModel.loadPokemonDetail(pokemonName, pokemonId)
+
+        // Establecer el contenido de la actividad con el composable PokemonDetailScreen
         setContent {
             PokemonDetailScreen(viewModel)
         }
     }
 }
+
 
 
 @Composable

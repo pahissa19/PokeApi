@@ -17,11 +17,13 @@ class PokemonDetailViewModel : ViewModel() {
     private val _pokemonDetail = MutableStateFlow<PokemonDetail?>(null)
     val pokemonDetail: StateFlow<PokemonDetail?> = _pokemonDetail
 
-    fun loadPokemonDetail(pokemonName: String) {
+    fun loadPokemonDetail(pokemonName: String, pokemonId: Int) {
         viewModelScope.launch {
             try {
                 Log.d("PokemonDetailViewModel", "Fetching Pokemon details for: $pokemonName")
                 val detail = repository.getPokemonDetail(pokemonName)
+                val imageUrl = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png" // Construir la URL de la imagen utilizando la ID del Pokémon
+                detail.imageUrl = imageUrl
                 Log.d("PokemonDetailViewModel", "Pokemon detail loaded successfully: $detail")
                 _pokemonDetail.value = detail
             } catch (e: Exception) {
@@ -31,6 +33,4 @@ class PokemonDetailViewModel : ViewModel() {
         }
     }
 }
-
-
 

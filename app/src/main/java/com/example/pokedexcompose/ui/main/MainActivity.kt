@@ -63,6 +63,7 @@ class MainActivity : ComponentActivity() {
                     // Navigate to PokemonDetailActivity when a Pokemon is clicked
                     context.startActivity(Intent(context, PokemonDetailActivity::class.java).apply {
                         putExtra("pokemonName", pokemon.name)
+                        putExtra("pokemonId", pokemon.id)
                     })
                 }
             }
@@ -78,18 +79,6 @@ class MainActivity : ComponentActivity() {
                 .padding(vertical = 8.dp)
                 .clickable { onClick() }
         ) {
-            Image(
-                painter = rememberImagePainter(
-                    data = pokemon.url,
-                    builder = {
-                        placeholder(R.drawable.ic_launcher_background)
-                        error(R.drawable.ic_launcher_foreground)
-                    }
-                ),
-                contentDescription = null,
-                modifier = Modifier.size(72.dp),
-                contentScale = ContentScale.FillBounds
-            )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = pokemon.name,
@@ -97,6 +86,7 @@ class MainActivity : ComponentActivity() {
                 color = Color.Black,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
+                    .padding(vertical = 8.dp) // Agregar un espacio vertical entre los nombres
             )
         }
     }
