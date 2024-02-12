@@ -15,6 +15,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", "\"https://pokeapi.co/api/v2/\"")
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -38,6 +39,8 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -50,7 +53,9 @@ android {
 }
 
 dependencies {
-
+    //Retrofit
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("androidx.activity:activity-compose:1.8.2")
     implementation ("androidx.compose.foundation:foundation:1.6.1")
     implementation ("androidx.compose.material:material:1.6.1")
