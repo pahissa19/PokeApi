@@ -28,15 +28,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.example.pokedexcompose.R
 import com.example.pokedexcompose.data.domain.model.Pokemon
 import com.example.pokedexcompose.ui.detail.PokemonDetailActivity
 import com.example.pokedexcompose.ui.list.PokemonListViewModel
@@ -107,7 +103,7 @@ class MainActivity : ComponentActivity() {
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
-                    ),                    fontWeight = FontWeight.Bold,
+                    ), fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(vertical = 8.dp),
