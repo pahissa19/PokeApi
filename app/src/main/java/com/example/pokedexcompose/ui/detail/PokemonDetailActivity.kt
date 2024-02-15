@@ -215,7 +215,7 @@ fun extractDominantColorFromImageUrl(context: Context, imageUrl: String): Color 
             imageLoader.execute(request)
         }
         if (result is SuccessResult) {
-            val bitmap = result.drawable.toBitmap()
+            val bitmap = result.drawable.toBitmap().copy(Bitmap.Config.ARGB_8888, true)
             dominantColor.value = extractDominantColor(bitmap)
         }
     }
