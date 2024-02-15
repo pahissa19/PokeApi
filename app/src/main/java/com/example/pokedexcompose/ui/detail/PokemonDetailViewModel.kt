@@ -3,6 +3,7 @@ package com.example.pokedexcompose.ui.detail
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pokedexcompose.data.domain.model.Ability
 import com.example.pokedexcompose.data.domain.model.PokemonDetail
 import com.example.pokedexcompose.data.domain.repository.remote.PokemonRepository
 import com.example.pokedexcompose.data.domain.repository.remote.response.RetrofitClient
@@ -33,4 +34,7 @@ class PokemonDetailViewModel : ViewModel() {
         }
     }
 }
+
+
+
 

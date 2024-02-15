@@ -11,9 +11,11 @@ object PokemonDetailMapper {
             name = response.name,
             weight = response.weight / 10.0,
             height = response.height / 10.0,
-            abilities = response.abilities.map { Ability(it.name ?: "Unknown") },
+            abilities = response.abilities.map { AbilityMapper.map(it) },
             imageUrl = imageUrl
         )
     }
 }
+
+
 

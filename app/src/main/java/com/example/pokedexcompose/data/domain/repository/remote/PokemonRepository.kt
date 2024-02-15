@@ -11,8 +11,8 @@ import com.example.pokedexcompose.data.domain.repository.remote.response.Pokemon
 class PokemonRepository(private val apiService: PokemonApiService) {
     suspend fun getListPokemon(limit: Int, offset: Int): List<Pokemon> {
         val response = apiService.getListPokemon(limit, offset)
-        if (response.isSuccessful) {
-            return PokemonListMapper.map(response.body()!!)
+        return if (response.isSuccessful) {
+            PokemonListMapper.map(response.body()!!)
         } else {
             throw Exception("Error al obtener la lista de Pokémon: ${response.message()}")
         }
@@ -27,12 +27,12 @@ class PokemonRepository(private val apiService: PokemonApiService) {
         }
     }
 
-    suspend fun getAbility(id: Int): Ability {
-        val response = apiService.getAbility(id)
+    suspend fun getPokemonAbilities(pokemonName: String): List<Ability> {
+        val response = apiService.getPokemonDetail(pokemonName)
         if (response.isSuccessful) {
-            return AbilityMapper.map(response.body()!!)
+            return response.body()?.abilities?.map { Ability(it.ability.name ?: "Unknown") } ?: emptyList()
         } else {
-            throw Exception("Error al obtener la habilidad: ${response.message()}")
+            throw Exception("Error al obtener las habilidades del Pokémon: ${response.message()}")
         }
     }
 }

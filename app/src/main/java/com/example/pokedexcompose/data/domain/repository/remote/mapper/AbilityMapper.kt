@@ -6,7 +6,7 @@ import com.example.pokedexcompose.data.domain.repository.remote.response.pokemon
 object AbilityMapper {
     fun map(response: AbilityResponse): Ability {
         return Ability(
-            name = response.name ?: "Unknown" // Verificar si el nombre es nulo
+            name = response.ability.name ?: "Unknown"
         )
     }
 }
