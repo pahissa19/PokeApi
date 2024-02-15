@@ -52,6 +52,8 @@ android {
 
 dependencies {
     implementation("io.coil-kt:coil-compose:1.4.0")
+    implementation ("androidx.palette:palette-ktx:1.0.0")
+
 
     // Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
