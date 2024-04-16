@@ -3,7 +3,6 @@ package com.example.pokedexcompose.data.domain.repository.remote
 import com.example.pokedexcompose.data.domain.model.Ability
 import com.example.pokedexcompose.data.domain.model.Pokemon
 import com.example.pokedexcompose.data.domain.model.PokemonDetail
-import com.example.pokedexcompose.data.domain.repository.remote.mapper.AbilityMapper
 import com.example.pokedexcompose.data.domain.repository.remote.mapper.PokemonDetailMapper
 import com.example.pokedexcompose.data.domain.repository.remote.mapper.PokemonListMapper
 import com.example.pokedexcompose.data.domain.repository.remote.response.PokemonApiService

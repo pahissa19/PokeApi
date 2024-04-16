@@ -10,6 +10,7 @@ import com.example.pokedexcompose.data.domain.repository.remote.response.Retrofi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 
 class PokemonDetailViewModel : ViewModel() {
@@ -33,6 +34,11 @@ class PokemonDetailViewModel : ViewModel() {
             }
         }
     }
+
+    // Funciones de utilidad para convertir unidades de peso y altura
+    fun convertKgToLbs(kg: Double): Double = (kg * 2.20462 * 10).roundToInt() / 10.0
+    fun convertKgToOz(kg: Double): Double = (kg * 35.274 * 10).roundToInt() / 10.0
+    fun convertMetersToFt(meters: Double): Double = (meters * 3.28084 * 10).roundToInt() / 10.0
 }
 
 

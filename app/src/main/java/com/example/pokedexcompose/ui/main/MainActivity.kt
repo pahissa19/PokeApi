@@ -1,13 +1,12 @@
 package com.example.pokedexcompose.ui.main
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -27,8 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,17 +34,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.drawable.toBitmap
-import androidx.palette.graphics.Palette
-import coil.ImageLoader
 import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.example.pokedexcompose.data.domain.model.Pokemon
 import com.example.pokedexcompose.ui.detail.PokemonDetailActivity
 import com.example.pokedexcompose.ui.list.PokemonListViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class MainActivity : ComponentActivity() {
@@ -79,6 +69,7 @@ class MainActivity : ComponentActivity() {
                         putExtra("pokemonName", pokemon.name)
                         putExtra("pokemonId", pokemon.id)
                     })
+                    finish()
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -87,9 +78,9 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    fun PokemonItem(pokemon: Pokemon, onClick: () -> Unit) {
-        val dominantColor =
-            com.example.pokedexcompose.ui.detail.extractDominantColorFromImageUrl(
+    private fun PokemonItem(pokemon: Pokemon, onClick: () -> Unit) {
+        val colorImage = colorImage()
+        val dominantColor = colorImage.extractDominantColorFromImageUrl(
                 LocalContext.current,
                 pokemon.imageUrl
             )

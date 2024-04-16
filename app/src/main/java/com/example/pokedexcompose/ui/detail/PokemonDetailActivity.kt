@@ -1,7 +1,6 @@
 package com.example.pokedexcompose.ui.detail
 
-import android.content.Context
-import android.graphics.Bitmap
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,6 +8,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,69 +18,107 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
-import androidx.palette.graphics.Palette
-import coil.ImageLoader
 import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
-import coil.request.SuccessResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlin.math.roundToInt
+import com.example.pokedexcompose.R
+import com.example.pokedexcompose.ui.main.MainActivity
+import com.example.pokedexcompose.ui.main.colorImage
 
 
 class PokemonDetailActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val pokemonName = intent.getStringExtra("pokemonName") ?: ""
         val pokemonId = intent.getIntExtra("pokemonId", 1)
-
         val viewModel = ViewModelProvider(this).get(PokemonDetailViewModel::class.java)
 
         viewModel.loadPokemonDetail(pokemonName, pokemonId)
 
-
         setContent {
-            PokemonDetailScreen(viewModel)
+            DetailScreen(viewModel)
+        }
+    }
+}
+@Composable
+fun DetailScreen(viewModel: PokemonDetailViewModel){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            TopAppBar()
+            Spacer(modifier = Modifier.weight(1f))
+            PokemonDetail(viewModel = viewModel)
+        }
+    }
+}
+@Composable
+fun TopAppBar() {
+    val context = LocalContext.current
+
+    androidx.compose.material.TopAppBar(
+        backgroundColor = Color.White
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = {
+                context.startActivity(Intent(context, MainActivity::class.java).apply {
+                })
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_arrow_back),
+                    contentDescription = "Back",
+                )
+            }
         }
     }
 }
 
 @Composable
-fun PokemonDetailScreen(viewModel: PokemonDetailViewModel) {
+fun PokemonDetail(viewModel: PokemonDetailViewModel) {
     val pokemonDetail by viewModel.pokemonDetail.collectAsState()
+    val colorImage = colorImage()
 
     if (pokemonDetail != null) {
         val detail = pokemonDetail!!
 
-        val dominantColor = extractDominantColorFromImageUrl(LocalContext.current, detail.imageUrl)
-        val textColor = if (dominantColor == Color.Black || dominantColor.luminance() < 0.18) {
-            Color.White
-        } else {
-            Color.Black
-        }
-
+        val dominantColor = colorImage.extractDominantColorFromImageUrl(
+            LocalContext.current,
+            detail.imageUrl
+        )
+        val textColor =
+            if (dominantColor == Color.Black || dominantColor.luminance() < 0.18) {
+                Color.White
+            } else {
+                Color.Black
+            }
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -91,7 +130,7 @@ fun PokemonDetailScreen(viewModel: PokemonDetailViewModel) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = detail.name.capitalize(),
+                    text = detail.name.uppercase(),
                     style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -116,8 +155,8 @@ fun PokemonDetailScreen(viewModel: PokemonDetailViewModel) {
 
                     Text(
                         text = "${detail.weight} Kg " +
-                                "(${convertKgToLbs(detail.weight)} Libras, " +
-                                "${convertKgToOz(detail.weight)} Onzas)",
+                                "(${viewModel.convertKgToLbs(detail.weight)} Libras, " +
+                                "${viewModel.convertKgToOz(detail.weight)} Onzas)",
                         style = TextStyle(fontSize = 16.sp),
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -132,7 +171,7 @@ fun PokemonDetailScreen(viewModel: PokemonDetailViewModel) {
 
                     Text(
                         text = "${detail.height} metros " +
-                                "(${convertMetersToFt(detail.height)} pies)",
+                                "(${viewModel.convertMetersToFt(detail.height)} pies)",
                         style = TextStyle(fontSize = 16.sp),
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
@@ -144,7 +183,10 @@ fun PokemonDetailScreen(viewModel: PokemonDetailViewModel) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp)
-                        .background(color = dominantColor, shape = MaterialTheme.shapes.medium)
+                        .background(
+                            color = dominantColor,
+                            shape = MaterialTheme.shapes.medium
+                        )
                 ) {
                     Column(
                         modifier = Modifier.padding(8.dp)
@@ -152,7 +194,10 @@ fun PokemonDetailScreen(viewModel: PokemonDetailViewModel) {
                     ) {
                         Text(
                             text = "Habilidades:",
-                            style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
+                            style = TextStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            ),
                             modifier = Modifier.padding(bottom = 8.dp),
                             color = textColor
                         )
@@ -191,40 +236,7 @@ fun PokemonDetailScreen(viewModel: PokemonDetailViewModel) {
     }
 }
 
-fun extractDominantColor(bitmap: Bitmap): Color {
-    val palette = Palette.from(bitmap).generate()
-    val dominantSwatch = palette.dominantSwatch
-    return if (dominantSwatch != null) {
-        Color(dominantSwatch.rgb)
-    } else {
-        Color.White // Si no se encuentra ningún color predominante, se devuelve blanco
-    }
-}
 
 
-@Composable
-fun extractDominantColorFromImageUrl(context: Context, imageUrl: String): Color {
-    val imageLoader = ImageLoader(LocalContext.current)
-    val dominantColor = remember { mutableStateOf(Color.White) }
 
-    LaunchedEffect(imageUrl) {
-        val request = ImageRequest.Builder(context)
-            .data(imageUrl)
-            .build()
-        val result = withContext(Dispatchers.IO) {
-            imageLoader.execute(request)
-        }
-        if (result is SuccessResult) {
-            val bitmap = result.drawable.toBitmap().copy(Bitmap.Config.ARGB_8888, true)
-            dominantColor.value = extractDominantColor(bitmap)
-        }
-    }
-
-    return dominantColor.value
-}
-
-// Funciones de utilidad para convertir unidades de peso y altura
-private fun convertKgToLbs(kg: Double): Double = (kg * 2.20462 * 10).roundToInt() / 10.0
-private fun convertKgToOz(kg: Double): Double = (kg * 35.274 * 10).roundToInt() / 10.0
-private fun convertMetersToFt(meters: Double): Double = (meters * 3.28084 * 10).roundToInt() / 10.0
 
